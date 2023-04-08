@@ -15,6 +15,11 @@ class MicropostsController < ApplicationController
   end
 
   def destroy
+#    @favorites = current_user.favorites.find_by(micropost_id: @micropost.id)
+#    if @favorites
+#      @favorites.destroy
+#    end 
+
     @micropost.destroy
     flash[:success] = "メッセージを削除しました。"
     redirect_back(fallback_location: root_path)    

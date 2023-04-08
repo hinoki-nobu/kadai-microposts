@@ -1,0 +1,44 @@
+<% if @favorites.any? %>
+  <ul class="list-unstyled mt-2">
+    <!-- お気に入り -->
+    <% @favorites.each do |favorite| %>
+      <% if current_user.id == favorite.user_id %>
+        <% micropost = @microposts.find_by(id: favorite.micropost_id) %>
+
+        <% if micropost %>
+          <li class="d-flex">
+            <img class="rounded me-2 mb-5" src="<%= gravatar_url(micropost.user, { size: 64 }) %>" alt="">
+            <div>
+              <div>
+                <%= link_to micropost.user.name, user_path(micropost.user), class: "text-decoration-none" %> <span class="text-muted">posted at <%= micropost.created_at %></span>
+              </div>
+              <div>
+                <p><%= micropost.content %></p>
+              </div>
+              <div>
+
+                <table class="table-sm">
+                  <tr>
+                    <th class="text-center">
+                      <!-- お気に入りボタン-->
+                      <%= render "favorites/favorites_button", micropost: micropost %>
+                    </th>
+                    <th class="text-center">
+                      <% if current_user == micropost.user %>
+                        <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: "btn btn-danger btn-sm" %>
+                      <% end %>
+                    </th>
+                  </tr>
+                </table>
+
+              </div>
+            </div>
+          </li>
+
+        <% end %>
+      <% end %>
+    <% end %>
+
+  </ul>
+  <%== pagy_bootstrap_nav(@pagy) %>
+<% end %>
